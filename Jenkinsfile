@@ -7,7 +7,6 @@ pipeline {
             buildDiscarder(logRotator(numToKeepStr: '10'))
             disableConcurrentBuilds()
             timeout(time: 1, unit: 'HOURS')
-            timestamps()
     }
     environment {
             AWS_ECR_REGION = 'us-east-1'
