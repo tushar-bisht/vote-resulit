@@ -12,12 +12,7 @@ pipeline {
             AWS_DEFAULT_REGION = 'us-east-1'
             SERVICE_NAME = 'vote'
             TASK_FAMILY = 'vote-fargate'
-            AWS_ECS_COMPATIBILITY = 'FARGATE'
-            AWS_ECS_NETWORK_MODE = 'awsvpc'
-            AWS_ECS_CPU = '256'
-            AWS_ECS_MEMORY = '512'
             ECS_CLUSTER = 'vote-app'
-            AWS_ECS_TASK_DEFINITION_PATH = './ecs/container-definition-update-image.json'
     }
     stages {
       stage('Git Checkout') {
