@@ -20,7 +20,7 @@ pipeline {
 
         stage('Unit Testing') {
           steps {
-            sh 'npm test'
+            sh 'echo Run the Test Cases'
           }
         }
 
@@ -48,8 +48,8 @@ aws ecs update-service --cluster ${ECS_CLUSTER} \
   environment {
     AWS_DEFAULT_REGION = 'us-east-1'
     SERVICE_NAME = 'vote'
-    TASK_FAMILY = 'vote-fargate'
-    ECS_CLUSTER = 'vote-app'
+    TASK_FAMILY = 'vote-fargate-v1'
+    ECS_CLUSTER = 'vote-application'
   }
   post {
     always {
