@@ -44,6 +44,12 @@ aws ecs update-service --cluster ${ECS_CLUSTER} \
       }
     }
 
+    stage('Adding New Stage') {
+      steps {
+        sh 'echo adding a new stage'
+      }
+    }
+
   }
   environment {
     AWS_DEFAULT_REGION = 'us-east-1'
