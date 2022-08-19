@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'upgrad'
+    label 'slave'
   }
   stages {
     stage('Git Checkout') {
@@ -13,8 +13,8 @@ pipeline {
       parallel {
         stage('Build Docker Image') {
           steps {
-            sh 'cd vote && sudo docker build . -t 635145294553.dkr.ecr.us-east-1.amazonaws.com/vote:${BUILD_NUMBER}'
-            sh 'sudo docker push 635145294553.dkr.ecr.us-east-1.amazonaws.com/vote:${BUILD_NUMBER}'
+            sh 'cd vote && sudo docker build . -t 776487083560.dkr.ecr.us-east-1.amazonaws.com/tushar:${BUILD_NUMBER}'
+            sh 'sudo docker push 776487083560.dkr.ecr.us-east-1.amazonaws.com/tushar:${BUILD_NUMBER}'
           }
         }
 
@@ -31,7 +31,7 @@ pipeline {
       steps {
         script {
           sh'''
-ECR_IMAGE="635145294553.dkr.ecr.us-east-1.amazonaws.com/vote:${BUILD_NUMBER}"
+ECR_IMAGE="776487083560.dkr.ecr.us-east-1.amazonaws.com/tushar:${BUILD_NUMBER}"
 TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "$TASK_FAMILY" --region "$AWS_DEFAULT_REGION")
 NEW_TASK_DEFINTIION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$ECR_IMAGE" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
 NEW_TASK_INFO=$(aws ecs register-task-definition --region "$AWS_DEFAULT_REGION" --cli-input-json "$NEW_TASK_DEFINTIION")
@@ -53,14 +53,14 @@ aws ecs update-service --cluster ${ECS_CLUSTER} \
   }
   environment {
     AWS_DEFAULT_REGION = 'us-east-1'
-    SERVICE_NAME = 'vote'
-    TASK_FAMILY = 'vote-fargate-v1'
-    ECS_CLUSTER = 'vote-application'
+    SERVICE_NAME = 'voteapp'
+    TASK_FAMILY = 'voteapp'
+    ECS_CLUSTER = 'vote'
   }
   post {
     always {
       deleteDir()
-      sh 'sudo docker rmi 635145294553.dkr.ecr.us-east-1.amazonaws.com/vote:${BUILD_NUMBER}'
+      sh 'sudo docker rmi 776487083560.dkr.ecr.us-east-1.amazonaws.com/tushar:${BUILD_NUMBER}'
     }
 
   }
